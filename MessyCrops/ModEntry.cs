@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 
@@ -24,9 +25,15 @@ namespace MessyCrops
             ModID = ModManifest.UniqueID;
             config = helper.ReadConfig<Config>();
 
-            helper.Events.GameLoop.GameLaunched += (s, e) => config.RegisterConfig(ModManifest);
+            helper.Events.GameLoop.ReturnedToTitle += (s, e) => CropPatch.offsets.Clear();
 
             harmony.PatchAll();
+        }
+
+        public void OnGameLaunched(object s, GameLaunchedEventArgs ev)
+        {
+            config.RegisterConfig(ModManifest);
+            HoeDirtPatch.Setup();
         }
 
         public bool CanLoad<T>(IAssetInfo asset)

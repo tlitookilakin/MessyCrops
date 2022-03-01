@@ -44,5 +44,15 @@ namespace MessyCrops
             var entry = ModEntry.helper.Content.Load<v>($"assets/{path}");
             model.Add(key, entry);
         }
+
+        public static v GetOrAdd<k, v>(this IDictionary<k, v> dict, k key, Func<k, v> getter)
+        {
+            if (dict.TryGetValue(key, out v val))
+                return val;
+
+            val = getter(key);
+            dict[key] = val;
+            return val;
+        }
     }
 }

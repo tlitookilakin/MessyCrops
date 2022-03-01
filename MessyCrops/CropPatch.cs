@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace MessyCrops
@@ -12,21 +13,24 @@ namespace MessyCrops
     {
         private static readonly FieldInfo drawpos = typeof(Crop).FieldNamed("drawPosition");
         private static readonly FieldInfo layerdepth = typeof(Crop).FieldNamed("layerDepth");
+        internal static readonly Dictionary<Crop, Vector2> offsets = new();
 
         [HarmonyPatch("updateDrawMath")]
         [HarmonyPostfix]
         public static void AddToList(Crop __instance, Vector2 tileLocation)
         {
-            layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + tileLocation.X * .0001f);
-            if(ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
-                drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + GetOffset(tileLocation));
+            var offset = offsets.GetOrAdd(__instance, GetOffset);
+            if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
+            {
+                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + offset.Y * .001f + tileLocation.X * .0001f);
+                drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset);
+            }
         }
 
-        public static Vector2 GetOffset(Vector2 pos)
+        public static Vector2 GetOffset(Crop _)
         {
             int amt = ModEntry.config.Amount;
-            Random random = new((int)(pos.X * pos.Y + pos.Y) * 77);
-            return new(random.Next(-amt, amt) * 4, random.Next(-amt, amt) * 4);
+            return new(Game1.random.Next(-amt, amt) * 4, Game1.random.Next(-amt, amt) * 4);
         }
     }
 }
