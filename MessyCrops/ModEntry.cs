@@ -26,6 +26,7 @@ namespace MessyCrops
             config = helper.ReadConfig<Config>();
 
             helper.Events.GameLoop.ReturnedToTitle += (s, e) => CropPatch.offsets.Clear();
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
             harmony.PatchAll();
         }
