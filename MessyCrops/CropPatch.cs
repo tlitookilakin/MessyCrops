@@ -22,7 +22,7 @@ namespace MessyCrops
             var offset = offsets.GetOrAdd(__instance, GetOffset);
             if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
             {
-                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + (offset.Y + ModEntry.config.Amount) * .000001f + tileLocation.X * .0000001f);
+                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + offset.Y * .000001f + tileLocation.X * .0000001f);
                 drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset);
             }
         }
