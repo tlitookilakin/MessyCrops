@@ -11,6 +11,8 @@ namespace MessyCrops
     [HarmonyPatch(typeof(Crop))]
     internal class CropPatch
     {
+        const float pixelDepth = .0001f;
+
         private static readonly FieldInfo drawpos = typeof(Crop).FieldNamed("drawPosition");
         private static readonly FieldInfo layerdepth = typeof(Crop).FieldNamed("layerDepth");
         internal static readonly Dictionary<Crop, Vector2> offsets = new();
@@ -22,7 +24,7 @@ namespace MessyCrops
             var offset = offsets.GetOrAdd(__instance, GetOffset);
             if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
             {
-                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + offset.Y * .000001f + tileLocation.X * .0000001f);
+                layerdepth.SetValue(__instance, (float)layerdepth.GetValue(__instance) + offset.Y * pixelDepth + tileLocation.X * .0000001f);
                 drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset);
             }
         }

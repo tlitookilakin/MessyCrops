@@ -5,12 +5,12 @@ namespace MessyCrops
 {
     internal class Config
     {
-        public int Amount { get; set; } = 4;
+        public int Amount { get; set; } = 3;
         public bool ApplyToTrellis { get; set; } = false;
 
         public void ResetToDefault()
         {
-            Amount = 4;
+            Amount = 3;
             ApplyToTrellis = false;
         }
         public void ApplyConfig()
@@ -30,7 +30,7 @@ namespace MessyCrops
                 (s) => Amount = s,
                 () => ModEntry.i18n.Get("config.offset.name"),
                 () => ModEntry.i18n.Get("config.offset.desc"),
-                0, 8
+                0, 7
             );
             api.AddBoolOption(manifest,
                 () => ApplyToTrellis,
