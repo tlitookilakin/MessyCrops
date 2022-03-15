@@ -6,5 +6,5 @@
   "UniqueID": "tlitookilakin.MessyCrops",
   "EntryDll": "MessyCrops.dll",
   "MinimumApiVersion": "3.13",
-  "UpdateKeys": [ "GitHub:tlitookilakin/MessyCrops", "Nexus:11317" ]
+  "UpdateKeys": [ "GitHub:tlitookilakin/MessyCrops", "Nexus:11317", "ModDrop:1123884" ]
 }
